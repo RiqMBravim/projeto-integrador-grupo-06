@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Acadêmico - Login</title>
+  <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="header-title">
+      <h1>GESTÃO ACADÊMICA</h1>
+    </div>
+
+    <div class="login-card">
+      <h2>Acessar Conta</h2>
+
+      <form action="#" method="POST">
+        <div class="input-group">
+          <label for="email">E-mail ou CPF</label>
+          <input type="text" id="email" placeholder="Digite seu e-mail ou CPF" required>
+        </div>
+
+        <div class="input-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Entrar</button>
+      </form>
+
+      <div class="login-footer">
+        <a href="#" id="openModal">Primeiro acesso ou sem cadastro? Fale com a coordenação</a>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div id="supportModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" id="closeModal">&times;</span>
+      <h3>Solicitar Acesso</h3>
+      <p>Preencha com seus dados para solicitar o envio de senha pela coordenação.</p>
+      
+      <form action="mailto:coordenacao@faculdade.edu.br" method="post" enctype="text/plain">
+        <div class="input-group">
+          <label for="nome">Nome Completo</label>
+          <input type="text" id="nome" name="Nome" required>
+        </div>
+
+        <div class="input-group">
+          <label for="email_pessoal">Seu E-mail Pessoal</label>
+          <input type="email" id="email_pessoal" name="Email Pessoal" placeholder="seuemail@gmail.com" required>
+        </div>
+
+        <div class="input-group">
+          <label for="mensagem">Matrícula ou CPF</label>
+          <input type="text" id="mensagem" name="Documento" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Enviar para Coordenação</button>
+      </form>
+    </div>
+  </div>
+
+  
+  <script src="../JS/script.js"></script>
+</body>
+</html>
