@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel do Aluno</title>
+  <link rel="stylesheet" href="../CSS/dashboard.css">
+</head>
+<body>
+
+  <div class="top-title">Bem-vindo ao seu perfil</div>
+
+  <div class="dashboard-container">
+
+    <!-- Menu Lateral Retrátil -->
+    <aside class="sidebar" id="sidebar">
+      <div class="menu-icon" id="menuBtn">☰</div>
+
+      <div class="sidebar-buttons" id="sidebarMenu">
+        <button class="btn-action" id="btnInicio"><br>Página Inicial</button>
+        <button class="btn-action" id="btnEditar"><br>Editar Informações</button>
+        <button class="btn-action" id="btnHistorico"><br>Visualizar Histórico</button>
+        <button class="btn-action" id="btnFaltas"><br>Consulta de Faltas</button>
+        <button class="btn-action logout" id="btnLogout"><br>Sair</button>
+      </div>
+    </aside>
+
+    <!-- Área Principal com Navegação por Abas -->
+    <main class="main-card">
+      
+      <!-- Página inicial  -->
+      <section id="tabInicio" class="tab-content active">
+        <h2>Página inicial</h2>
+
+        <div class="profile-row">
+          <div class="avatar-container">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="profile-details">
+            <h3 id="studentName">Carregando...</h3>
+            <p id="studentBirth">--/--/----</p>
+            <p id="studentCpf">XXX.XXX.XXX-XX</p>
+            <a href="#" id="studentEmail">carregando...</a>
+          </div>
+        </div>
+
+        <hr class="line-divider">
+
+        <div class="info-card">
+          <h4>Curso Atual</h4>
+          <p class="highlight-text" id="studentCourse">--</p>
+          <p class="sub-text"><strong>Período:</strong> <span id="studentPeriod">--</span></p>
+        </div>
+      </section>
+
+      <!-- Editar informações -->
+      <section id="tabEditar" class="tab-content">
+        <h2>Editar Informações</h2>
+        <p class="sub-text">Atualização de cadastro disponível junto à secretaria.</p>
+      </section>
+
+      <!-- Histórico escolar  -->
+      <section id="tabHistorico" class="tab-content">
+        <h2>Histórico Escolar</h2>
+        <div id="studentHistory" class="info-card history-content">Nenhum registro encontrado.</div>
+      </section>
+
+      <!-- Consulta de faltas  -->
+      <section id="tabFaltas" class="tab-content">
+        <h2>Consulta de Faltas</h2>
+        <div class="info-card">
+          <p class="sub-text">Frequência escolar atualizada: <strong>95% de presença</strong>.</p>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="../JS/script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "carlos.amador@gestaoacademica.com.br": {
+    "nome": "Carlos Amador Amaral",
+    "nascimento": "29/07/1963",
+    "cpf": "123.456.789-00",
+    "email": "carlos.amador@gestaoacademica.com.br",
+    "curso": "Engenharia de Software",
+    "periodo": "Diurno (7:00hrs a 13:20h)",
+    "docStatus": "*Documentação pendente",
+    "courseStatus": "*Esperando lista de espera",
+    "historico": "Sem reprovações registradas."
+  },
+  "ana.maria@gestaoacademica.com.br": {
+    "nome": "Ana Maria Silveira",
+    "nascimento": "15/03/2001",
+    "cpf": "987.654.321-11",
+    "email": "ana.maria@gestaoacademica.com.br",
+    "curso": "Análise e Dev. de Sistemas",
+    "periodo": "Noturno (19:00hrs a 22:30h)",
+    "docStatus": "*Documentação ok",
+    "courseStatus": "*Matriculado",
+    "historico": "1º Semestre concluído com média 9.2."
+  }
+}
