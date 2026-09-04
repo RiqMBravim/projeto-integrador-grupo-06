@@ -1,5 +1,6 @@
 
 const loginForm = document.querySelector(".login-card form");
+const loginError = document.getElementById("loginError");
 
 
 //Modal de suporte e login 
@@ -17,6 +18,8 @@ if (loginForm) {
 
   loginForm.onsubmit = function(e) {
     e.preventDefault();
+
+    loginError.textContent = "";
 
     const identificadorInput = document
       .getElementById("email")
@@ -44,13 +47,8 @@ if (loginForm) {
           );
         });
 
-        if (!usuario) {
-          alert("Usuário não encontrado.");
-          return;
-        }
-
-        if (usuario.senha !== senhaInput) {
-          alert("Senha incorreta.");
+        if (!usuario || usuario.senha !== senhaInput) {
+          loginError.textContent = "E-mail/CPF ou senha inválidos.";
           return;
         }
 
@@ -63,7 +61,7 @@ if (loginForm) {
       })
       .catch(err => {
         console.error("Erro ao carregar dados:", err);
-        alert("Erro ao acessar os dados dos usuários.");
+        loginError.textContent = "Não foi possível realizar o login. Tente novamente.";
       });
   };
 }

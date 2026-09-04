@@ -173,3 +173,13 @@ body {
   margin-bottom: 20px;
   line-height: 1.5;
 }
+
+.login-error {
+  min-height: 20px;
+  margin-top: -8px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  color: #b91c1c;
+}
