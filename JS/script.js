@@ -1,42 +1,132 @@
+// =============================
+// Funções auxiliares
+// =============================
 
-const loginForm = document.querySelector(".login-card form");
+function normalizarCpf(valor) {
+  return String(valor || "").replace(/\D/g, "");
+}
+
+function preencherTexto(id, valor) {
+  const elemento = document.getElementById(id);
+
+  if (elemento && valor !== undefined && valor !== null) {
+    elemento.textContent = valor;
+  }
+}
+
+function encerrarSessao() {
+  localStorage.removeItem("usuarioLogado");
+  window.location.replace("index.html");
+}
 
 
-//Modal de suporte e login 
+// =============================
+// Login
+// =============================
+
+const loginForm = document.getElementById("loginForm");
+const loginError = document.getElementById("loginError");
+
 if (loginForm) {
   const modal = document.getElementById("supportModal");
   const btn = document.getElementById("openModal");
   const close = document.getElementById("closeModal");
+  const identificadorCampo = document.getElementById("email");
+  const senhaCampo = document.getElementById("senha");
 
-  
+  // Modal de suporte
   if (btn && modal && close) {
-    btn.onclick = (e) => { e.preventDefault(); modal.style.display = "flex"; };
-    close.onclick = () => { modal.style.display = "none"; };
-    window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.style.display = "flex";
+    });
+
+    close.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.style.display === "flex") {
+        modal.style.display = "none";
+      }
+    });
   }
 
-  loginForm.onsubmit = function(e) {
+  loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
-    const userInput = document.getElementById("email").value.trim().toLowerCase();
+
+    if (loginError) {
+      loginError.textContent = "";
+    }
+
+    if (identificadorCampo) {
+      identificadorCampo.removeAttribute("aria-invalid");
+    }
+
+    if (senhaCampo) {
+      senhaCampo.removeAttribute("aria-invalid");
+    }
+
+    const identificadorInput = identificadorCampo.value.trim().toLowerCase();
+    const senhaInput = senhaCampo.value;
 
     fetch("../dados.json")
-      .then(res => res.json())
-      .then(usuariosDB => {
-        if (usuariosDB[userInput]) {
-          localStorage.setItem("usuarioLogado", userInput);
-          window.location.href = "dashboard.html";
-        } else {
-          alert("Usuário não encontrado na base da secretaria.");
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
         }
+
+        return res.json();
       })
-      .catch(err => {
-        console.error("Erro ao carregar dados:", err);
-        alert("Certifique-se de estar usando o Live Server para ler o arquivo JSON.");
+      .then((usuariosDB) => {
+        const cpfDigitado = normalizarCpf(identificadorInput);
+        const pareceEmail = identificadorInput.includes("@");
+
+        const usuario = Object.values(usuariosDB).find((item) => {
+          const emailUsuario = String(item.email || "").trim().toLowerCase();
+          const cpfUsuario = normalizarCpf(item.cpf);
+
+          const emailConfere = emailUsuario === identificadorInput;
+          const cpfConfere = !pareceEmail && cpfDigitado.length > 0 && cpfUsuario === cpfDigitado;
+
+          return emailConfere || cpfConfere;
+        });
+
+        if (!usuario || usuario.senha !== senhaInput) {
+          if (loginError) {
+            loginError.textContent = "E-mail/CPF ou senha inválidos.";
+          }
+
+          identificadorCampo.setAttribute("aria-invalid", "true");
+          senhaCampo.setAttribute("aria-invalid", "true");
+          senhaCampo.value = "";
+          senhaCampo.focus();
+          return;
+        }
+
+        localStorage.setItem("usuarioLogado", usuario.email.toLowerCase());
+        window.location.assign("dashboard.html");
+      })
+      .catch((err) => {
+        console.error("Erro ao realizar login:", err);
+
+        if (loginError) {
+          loginError.textContent = "Não foi possível realizar o login. Tente novamente.";
+        }
       });
-  };
+  });
 }
 
-//Carregamento do dashboard
+
+// =============================
+// Dashboard / validação da sessão
+// =============================
 
 const studentName = document.getElementById("studentName");
 
@@ -44,65 +134,97 @@ if (studentName) {
   const emailLogado = localStorage.getItem("usuarioLogado");
 
   if (!emailLogado) {
-    window.location.href = "index.html";
+    window.location.replace("index.html");
   } else {
     fetch("../dados.json")
-      .then(res => res.json())
-      .then(usuariosDB => {
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
+        }
+
+        return res.json();
+      })
+      .then((usuariosDB) => {
         const dados = usuariosDB[emailLogado];
 
-        if (dados) {
-          document.getElementById("studentName").textContent = dados.nome;
-          document.getElementById("studentBirth").textContent = dados.nascimento;
-          document.getElementById("studentCpf").textContent = dados.cpf;
-          document.getElementById("studentEmail").textContent = dados.email;
-          document.getElementById("studentEmail").href = "mailto:" + dados.email;
-          document.getElementById("studentCourse").textContent = dados.curso;
-          document.getElementById("studentPeriod").textContent = dados.periodo;
-          document.getElementById("docStatus").textContent = dados.docStatus;
-          document.getElementById("courseStatus").textContent = dados.courseStatus;
-          document.getElementById("studentHistory").textContent = dados.historico;
+        // Um valor no localStorage não é suficiente: o usuário precisa existir na base.
+        if (!dados) {
+          encerrarSessao();
+          return;
+        }
+
+        preencherTexto("studentName", dados.nome);
+        preencherTexto("studentBirth", dados.nascimento);
+        preencherTexto("studentCpf", dados.cpf);
+        preencherTexto("studentCourse", dados.curso);
+        preencherTexto("studentPeriod", dados.periodo);
+        preencherTexto("docStatus", dados.docStatus);
+        preencherTexto("courseStatus", dados.courseStatus);
+        preencherTexto("studentHistory", dados.historico);
+
+        const studentEmail = document.getElementById("studentEmail");
+        if (studentEmail) {
+          studentEmail.textContent = dados.email;
+          studentEmail.href = "mailto:" + dados.email;
         }
       })
-      .catch(err => console.error("Erro ao carregar dados no dashboard:", err));
+      .catch((err) => {
+        // Falha de carregamento não significa que a credencial ficou inválida.
+        // Mantemos a sessão e exibimos um estado de erro, evitando loop de redirecionamento.
+        console.error("Erro ao carregar dados do dashboard:", err);
+        preencherTexto("studentName", "Não foi possível carregar seus dados.");
+      });
   }
 }
 
 
+// =============================
 // Menu retrátil
+// =============================
+
 const menuBtn = document.getElementById("menuBtn");
 const sidebarMenu = document.getElementById("sidebarMenu");
 
 if (menuBtn && sidebarMenu) {
-  menuBtn.onclick = function() {
+  menuBtn.addEventListener("click", () => {
     sidebarMenu.classList.toggle("active");
-  };
+  });
 }
+
+
+// =============================
 // Navegação de abas
+// =============================
+
 const btnInicio = document.getElementById("btnInicio");
 const btnEditar = document.getElementById("btnEditar");
 const btnHistorico = document.getElementById("btnHistorico");
 const btnFaltas = document.getElementById("btnFaltas");
-
 const tabs = document.querySelectorAll(".tab-content");
 
 function abrirAba(abaId) {
-  tabs.forEach(tab => tab.classList.remove("active"));
+  tabs.forEach((tab) => tab.classList.remove("active"));
+
   const abaAlvo = document.getElementById(abaId);
-  if (abaAlvo) abaAlvo.classList.add("active");
+  if (abaAlvo) {
+    abaAlvo.classList.add("active");
+  }
 }
 
-if (btnInicio) btnInicio.onclick = () => abrirAba("tabInicio");
-if (btnEditar) btnEditar.onclick = () => abrirAba("tabEditar");
-if (btnHistorico) btnHistorico.onclick = () => abrirAba("tabHistorico");
-if (btnFaltas) btnFaltas.onclick = () => abrirAba("tabFaltas");
+if (btnInicio) btnInicio.addEventListener("click", () => abrirAba("tabInicio"));
+if (btnEditar) btnEditar.addEventListener("click", () => abrirAba("tabEditar"));
+if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHistorico"));
+if (btnFaltas) btnFaltas.addEventListener("click", () => abrirAba("tabFaltas"));
 
-//Logout
+
+// =============================
+// Logout
+// =============================
 
 const btnLogout = document.getElementById("btnLogout");
+
 if (btnLogout) {
-  btnLogout.onclick = function() {
-    localStorage.removeItem("usuarioLogado");
-    window.location.href = "index.html";
-  };
+  btnLogout.addEventListener("click", () => {
+    encerrarSessao();
+  });
 }
