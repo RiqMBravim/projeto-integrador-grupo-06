@@ -17,21 +17,39 @@ if (loginForm) {
 
   loginForm.onsubmit = function(e) {
     e.preventDefault();
-    const userInput = document.getElementById("email").value.trim().toLowerCase();
+
+    const userInput = document
+      .getElementById("email")
+      .value
+      .trim()
+      .toLowerCase();
+
+    const senhaInput = document
+      .getElementById("senha")
+      .value;
 
     fetch("../dados.json")
       .then(res => res.json())
       .then(usuariosDB => {
-        if (usuariosDB[userInput]) {
-          localStorage.setItem("usuarioLogado", userInput);
-          window.location.href = "dashboard.html";
-        } else {
-          alert("Usuário não encontrado na base da secretaria.");
+
+        const usuario = usuariosDB[userInput];
+
+        if (!usuario) {
+          alert("Usuário não encontrado.");
+          return;
         }
+
+        if (usuario.senha !== senhaInput) {
+          alert("Senha incorreta.");
+          return;
+        }
+
+        localStorage.setItem("usuarioLogado", userInput);
+        window.location.href = "dashboard.html";
       })
       .catch(err => {
         console.error("Erro ao carregar dados:", err);
-        alert("Certifique-se de estar usando o Live Server para ler o arquivo JSON.");
+        alert("Erro ao acessar os dados dos usuários.");
       });
   };
 }
