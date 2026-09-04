@@ -18,7 +18,7 @@ if (loginForm) {
   loginForm.onsubmit = function(e) {
     e.preventDefault();
 
-    const userInput = document
+    const identificadorInput = document
       .getElementById("email")
       .value
       .trim()
@@ -32,7 +32,17 @@ if (loginForm) {
       .then(res => res.json())
       .then(usuariosDB => {
 
-        const usuario = usuariosDB[userInput];
+        const cpfDigitado = identificadorInput.replace(/\D/g, "");
+
+        const usuario = Object.values(usuariosDB).find(usuario => {
+          const emailUsuario = usuario.email.toLowerCase();
+          const cpfUsuario = usuario.cpf.replace(/\D/g, "");
+
+          return (
+            emailUsuario === identificadorInput ||
+            cpfUsuario === cpfDigitado
+          );
+        });
 
         if (!usuario) {
           alert("Usuário não encontrado.");
@@ -44,7 +54,11 @@ if (loginForm) {
           return;
         }
 
-        localStorage.setItem("usuarioLogado", userInput);
+        localStorage.setItem(
+          "usuarioLogado",
+          usuario.email.toLowerCase()
+        );
+
         window.location.href = "dashboard.html";
       })
       .catch(err => {
