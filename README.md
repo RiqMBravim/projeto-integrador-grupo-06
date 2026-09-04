@@ -8,7 +8,6 @@ Projeto Integrador desenvolvido para o curso de Análise e Desenvolvimento de Si
 - Bruno de Souza Scramignon Costa
 - Davi Freitas de Moura Bina
 - Sabrina Aparecida Alves
-- Integrante 5
 
 ## Objetivo
 
