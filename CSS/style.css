@@ -183,3 +183,13 @@ body {
   text-align: center;
   color: #b91c1c;
 }
+.input-group input[aria-invalid="true"] {
+  border-color: #b91c1c;
+  background-color: #fff7f7;
+}
+
+.close-btn {
+  background: transparent;
+  border: 0;
+  line-height: 1;
+}

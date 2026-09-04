@@ -15,15 +15,29 @@
     <div class="login-card">
       <h2>Acessar Conta</h2>
 
-      <form action="#" method="POST">
+      <form id="loginForm">
         <div class="input-group">
           <label for="email">E-mail ou CPF</label>
-          <input type="text" id="email" placeholder="Digite seu e-mail ou CPF" required>
+          <input
+            type="text"
+            id="email"
+            name="identificador"
+            placeholder="Digite seu e-mail ou CPF"
+            autocomplete="username"
+            required
+          >
         </div>
 
         <div class="input-group">
           <label for="senha">Senha</label>
-          <input type="password" id="senha" placeholder="Digite sua senha" required>
+          <input
+            type="password"
+            id="senha"
+            name="senha"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+            required
+          >
         </div>
 
         <p id="loginError" class="login-error" role="alert" aria-live="polite"></p>
@@ -37,22 +51,21 @@
     </div>
   </div>
 
- 
-  <div id="supportModal" class="modal">
+  <div id="supportModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="supportTitle">
     <div class="modal-content">
-      <span class="close-btn" id="closeModal">&times;</span>
-      <h3>Solicitar Acesso</h3>
+      <button type="button" class="close-btn" id="closeModal" aria-label="Fechar">&times;</button>
+      <h3 id="supportTitle">Solicitar Acesso</h3>
       <p>Preencha com seus dados para solicitar o envio de senha pela coordenação.</p>
-      
+
       <form action="mailto:coordenacao@faculdade.edu.br" method="post" enctype="text/plain">
         <div class="input-group">
           <label for="nome">Nome Completo</label>
-          <input type="text" id="nome" name="Nome" required>
+          <input type="text" id="nome" name="Nome" autocomplete="name" required>
         </div>
 
         <div class="input-group">
           <label for="email_pessoal">Seu E-mail Pessoal</label>
-          <input type="email" id="email_pessoal" name="Email Pessoal" placeholder="seuemail@gmail.com" required>
+          <input type="email" id="email_pessoal" name="Email Pessoal" placeholder="seuemail@gmail.com" autocomplete="email" required>
         </div>
 
         <div class="input-group">
@@ -65,7 +78,6 @@
     </div>
   </div>
 
-  
   <script src="../JS/script.js"></script>
 </body>
 </html>
