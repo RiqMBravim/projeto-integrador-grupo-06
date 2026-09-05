@@ -314,3 +314,36 @@ body {
   color: #dc2626;
   font-weight: 700;
 }
+
+/* Estilos para a aba Faltas */
+.faltas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.falta-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.falta-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.falta-detalhe {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.falta-detalhe span:last-child {
+  font-weight: 600;
+}
