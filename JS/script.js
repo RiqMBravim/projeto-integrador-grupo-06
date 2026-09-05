@@ -199,6 +199,7 @@ if (menuBtn && sidebarMenu) {
 const btnInicio = document.getElementById("btnInicio");
 const btnEditar = document.getElementById("btnEditar");
 const btnHistorico = document.getElementById("btnHistorico");
+const btnNotas = document.getElementById("btnNotas");
 const btnFaltas = document.getElementById("btnFaltas");
 const tabs = document.querySelectorAll(".tab-content");
 
@@ -214,6 +215,7 @@ function abrirAba(abaId) {
 if (btnInicio) btnInicio.addEventListener("click", () => abrirAba("tabInicio"));
 if (btnEditar) btnEditar.addEventListener("click", () => abrirAba("tabEditar"));
 if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHistorico"));
+if (btnNotas) btnNotas.onclick = () => window.location.href = "notas.html";
 if (btnFaltas) btnFaltas.addEventListener("click", () => abrirAba("tabFaltas"));
 
 
