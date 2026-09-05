@@ -177,6 +177,7 @@ if (studentName) {
   }
 }
 
+
 // =============================
 // Montagem do Histórico Escolar
 // =============================
@@ -210,6 +211,7 @@ function montarHistorico(disciplinas) {
     container.appendChild(card);
   });
 }
+
 
 // =============================
 // Menu retrátil
@@ -249,7 +251,7 @@ if (btnInicio) btnInicio.addEventListener("click", () => abrirAba("tabInicio"));
 if (btnEditar) btnEditar.addEventListener("click", () => abrirAba("tabEditar"));
 if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHistorico"));
 if (btnNotas) btnNotas.addEventListener("click", () => abrirAba("tabNotas"));
-if (btnFaltas) btnFaltas.addEventListener("click", () => abrirAba("tabFaltas"));
+
 
 // =============================
 // Carregamento de Notas na Aba
@@ -318,6 +320,75 @@ function carregarNotas() {
       notasContainer.innerHTML = "<p>Erro ao carregar as notas. Tente novamente mais tarde.</p>";
     });
 }
+
+
+// =============================
+// Carregamento de Faltas na Aba
+// =============================
+
+let faltasCarregadas = false;
+const faltasContainer = document.getElementById("faltasContainer");
+
+if (btnFaltas && faltasContainer) {
+  btnFaltas.addEventListener("click", () => {
+    abrirAba("tabFaltas");
+    if (!faltasCarregadas) {
+      carregarFaltas();
+      faltasCarregadas = true;
+    }
+  });
+}
+
+function carregarFaltas() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return;
+
+  fetch("../dados.json")
+    .then((res) => {
+      if (!res.ok) throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      const usuario = data[emailLogado];
+      if (!usuario || !usuario.disciplinas || usuario.disciplinas.length === 0) {
+        faltasContainer.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
+        return;
+      }
+
+      let html = "";
+      usuario.disciplinas.forEach((disciplina) => {
+        const cargaHoraria = disciplina.cargaHoraria || 0;
+        const faltasHoras = disciplina.faltasHoras || 0;
+        const presencaPercentual = cargaHoraria > 0
+          ? ((cargaHoraria - faltasHoras) / cargaHoraria) * 100
+          : 0;
+
+        let situacao = "Aprovado";
+        let classeSituacao = "situacao-aprovado";
+        if (presencaPercentual < 75) {
+          situacao = "Reprovado por faltas";
+          classeSituacao = "situacao-reprovado";
+        }
+
+        html += `
+          <div class="falta-card">
+            <h3>${disciplina.nome}</h3>
+            <div class="falta-detalhe"><span>Carga horária</span><span>${cargaHoraria}h</span></div>
+            <div class="falta-detalhe"><span>Faltas</span><span>${faltasHoras}h</span></div>
+            <div class="falta-detalhe"><span>Presença</span><span>${presencaPercentual.toFixed(1)}%</span></div>
+            <div class="falta-detalhe"><span>Situação</span><span class="${classeSituacao}">${situacao}</span></div>
+          </div>
+        `;
+      });
+
+      faltasContainer.innerHTML = html;
+    })
+    .catch((err) => {
+      console.error("Erro ao carregar faltas:", err);
+      faltasContainer.innerHTML = "<p>Erro ao carregar as informações de frequência. Tente novamente mais tarde.</p>";
+    });
+}
+
 
 // =============================
 // Logout
