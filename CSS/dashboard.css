@@ -271,3 +271,46 @@ body {
 .situacao-aprovado { color: #16a34a; font-weight: 700; }
 .situacao-reprovado { color: #dc2626; font-weight: 700; }
 .situacao-recuperacao { color: #d97706; font-weight: 700; }
+
+/* Estilos para a aba Histórico */
+.historico-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.historico-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.historico-card h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.historico-detalhe {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #334155;
+  margin-bottom: 6px;
+}
+
+.historico-detalhe span:last-child {
+  font-weight: 600;
+}
+
+.situacao-aprovado {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+.situacao-reprovado {
+  color: #dc2626;
+  font-weight: 700;
+}

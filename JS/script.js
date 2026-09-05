@@ -160,7 +160,7 @@ if (studentName) {
         preencherTexto("studentPeriod", dados.periodo);
         preencherTexto("docStatus", dados.docStatus);
         preencherTexto("courseStatus", dados.courseStatus);
-        preencherTexto("studentHistory", dados.historico);
+        montarHistorico(dados.disciplinas);
 
         const studentEmail = document.getElementById("studentEmail");
         if (studentEmail) {
@@ -177,6 +177,39 @@ if (studentName) {
   }
 }
 
+// =============================
+// Montagem do Histórico Escolar
+// =============================
+
+function montarHistorico(disciplinas) {
+  const container = document.getElementById("studentHistory");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!disciplinas || disciplinas.length === 0) {
+    container.innerHTML = "<p>Nenhuma disciplina cursada até o momento.</p>";
+    return;
+  }
+
+  disciplinas.forEach((disciplina) => {
+    const av1 = disciplina.notas?.av1 ?? 0;
+    const av2 = disciplina.notas?.av2 ?? 0;
+    const media = (av1 + av2) / 2;
+    const situacao = media >= 7 ? "Aprovado" : "Reprovado";
+    const classeSituacao = situacao === "Aprovado" ? "situacao-aprovado" : "situacao-reprovado";
+
+    const card = document.createElement("div");
+    card.className = "historico-card";
+    card.innerHTML = `
+      <h3>${disciplina.nome}</h3>
+      <div class="historico-detalhe"><span>Carga horária</span><span>${disciplina.cargaHoraria}h</span></div>
+      <div class="historico-detalhe"><span>Média final</span><span>${media.toFixed(2)}</span></div>
+      <div class="historico-detalhe"><span>Situação</span><span class="${classeSituacao}">${situacao}</span></div>
+    `;
+    container.appendChild(card);
+  });
+}
 
 // =============================
 // Menu retrátil
