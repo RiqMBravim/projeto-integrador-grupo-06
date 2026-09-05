@@ -22,6 +22,26 @@
     "periodo": "Noturno (19:00hrs a 22:30h)",
     "docStatus": "*Documentação ok",
     "courseStatus": "*Matriculado",
-    "historico": "1º Semestre concluído com média 9.2."
+    "historico": "1º Semestre concluído com média 9.2.",
+    "disciplinas": [
+      {
+        "nome": "Banco de Dados",
+        "cargaHoraria": 80,
+        "faltasHoras": 6,
+        "notas": {
+          "av1": 8.5,
+          "av2": 7.0
+        }
+      },
+      {
+        "nome": "Engenharia de Software",
+        "cargaHoraria": 60,
+        "faltasHoras": 3,
+        "notas": {
+          "av1": 9.0,
+          "av2": 8.5
+        }
+      }
+    ]
   }
 }
