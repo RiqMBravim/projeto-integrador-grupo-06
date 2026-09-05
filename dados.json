@@ -9,7 +9,27 @@
     "periodo": "Diurno (7:00hrs a 13:20h)",
     "docStatus": "*Documentação pendente",
     "courseStatus": "*Esperando lista de espera",
-    "historico": "Sem reprovações registradas."
+    "historico": "Reprovado em: Banco de Dados - Média: 5.75",
+    "disciplinas": [
+      {
+        "nome": "Banco de Dados",
+        "cargaHoraria": 80,
+        "faltasHoras": 9,
+        "notas": {
+          "av1": 4.5,
+          "av2": 7.0
+        }
+      },
+      {
+        "nome": "Engenharia de Software",
+        "cargaHoraria": 60,
+        "faltasHoras": 2,
+        "notas": {
+          "av1": 7.0,
+          "av2": 8.5
+        }
+      }
+    ]
   },
 
   "ana.maria@gestaoacademica.com.br": {
