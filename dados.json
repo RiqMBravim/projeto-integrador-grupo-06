@@ -9,7 +9,6 @@
     "periodo": "Diurno (7:00hrs a 13:20h)",
     "docStatus": "*Documentação pendente",
     "courseStatus": "*Esperando lista de espera",
-    "historico": "Reprovado em: Banco de Dados - Média: 5.75",
     "disciplinas": [
       {
         "nome": "Banco de Dados",
@@ -42,7 +41,6 @@
     "periodo": "Noturno (19:00hrs a 22:30h)",
     "docStatus": "*Documentação ok",
     "courseStatus": "*Matriculado",
-    "historico": "1º Semestre concluído com média 8.25",
     "disciplinas": [
       {
         "nome": "Banco de Dados",

@@ -259,7 +259,6 @@ function abrirAba(abaId) {
 if (btnInicio) btnInicio.addEventListener("click", () => abrirAba("tabInicio"));
 if (btnEditar) btnEditar.addEventListener("click", () => abrirAba("tabEditar"));
 if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHistorico"));
-if (btnNotas) btnNotas.addEventListener("click", () => abrirAba("tabNotas"));
 
 
 // =============================
