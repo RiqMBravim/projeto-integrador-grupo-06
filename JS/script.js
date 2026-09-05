@@ -197,8 +197,17 @@ function montarHistorico(disciplinas) {
     const av1 = disciplina.notas?.av1 ?? 0;
     const av2 = disciplina.notas?.av2 ?? 0;
     const media = (av1 + av2) / 2;
-    const situacao = media >= 7 ? "Aprovado" : "Reprovado";
-    const classeSituacao = situacao === "Aprovado" ? "situacao-aprovado" : "situacao-reprovado";
+
+    let situacao = "Aprovado";
+    let classeSituacao = "situacao-aprovado";
+
+    if (media < 4) {
+      situacao = "Reprovado";
+      classeSituacao = "situacao-reprovado";
+    } else if (media < 7) {
+      situacao = "Recuperação";
+      classeSituacao = "situacao-recuperacao";
+    }
 
     const card = document.createElement("div");
     card.className = "historico-card";
