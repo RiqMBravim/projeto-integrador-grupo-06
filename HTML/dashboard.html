@@ -20,6 +20,7 @@
         <button class="btn-action" id="btnInicio"><br>Página Inicial</button>
         <button class="btn-action" id="btnEditar"><br>Editar Informações</button>
         <button class="btn-action" id="btnHistorico"><br>Visualizar Histórico</button>
+        <button class="btn-action" id="btnNotas"><br>Consulta de Notas</button>
         <button class="btn-action" id="btnFaltas"><br>Consulta de Faltas</button>
         <button class="btn-action logout" id="btnLogout"><br>Sair</button>
       </div>
@@ -65,14 +66,24 @@
       <!-- Histórico escolar  -->
       <section id="tabHistorico" class="tab-content">
         <h2>Histórico Escolar</h2>
-        <div id="studentHistory" class="info-card history-content">Nenhum registro encontrado.</div>
+        <div id="studentHistory" class="historico-container">
+    <!-- Cards de histórico serão inseridos via JavaScript -->
+        </div>
+      </section>
+
+      <!-- Consulta de notas -->
+      <section id="tabNotas" class="tab-content">
+        <h2>Consulta de Notas</h2>
+        <div id="notasContainer" class="notas-container">
+      <!-- Os cards de disciplinas serão inseridos via JavaScript -->
+        </div>
       </section>
 
       <!-- Consulta de faltas  -->
       <section id="tabFaltas" class="tab-content">
         <h2>Consulta de Faltas</h2>
-        <div class="info-card">
-          <p class="sub-text">Frequência escolar atualizada: <strong>95% de presença</strong>.</p>
+        <div id="faltasContainer" class="faltas-container">
+      <!-- Os dados de frequência serão inseridos via JavaScript -->
         </div>
       </section>
 

@@ -9,7 +9,26 @@
     "periodo": "Diurno (7:00hrs a 13:20h)",
     "docStatus": "*Documentação pendente",
     "courseStatus": "*Esperando lista de espera",
-    "historico": "Sem reprovações registradas."
+    "disciplinas": [
+      {
+        "nome": "Banco de Dados",
+        "cargaHoraria": 80,
+        "faltasHoras": 9,
+        "notas": {
+          "av1": 4.5,
+          "av2": 7.0
+        }
+      },
+      {
+        "nome": "Engenharia de Software",
+        "cargaHoraria": 60,
+        "faltasHoras": 2,
+        "notas": {
+          "av1": 7.0,
+          "av2": 8.5
+        }
+      }
+    ]
   },
 
   "ana.maria@gestaoacademica.com.br": {
@@ -17,11 +36,80 @@
     "nascimento": "15/03/2001",
     "cpf": "987.654.321-11",
     "email": "ana.maria@gestaoacademica.com.br",
-    "senha": "654321",
+    "senha": "123456",
     "curso": "Análise e Dev. de Sistemas",
     "periodo": "Noturno (19:00hrs a 22:30h)",
     "docStatus": "*Documentação ok",
     "courseStatus": "*Matriculado",
-    "historico": "1º Semestre concluído com média 9.2."
+    "disciplinas": [
+      {
+        "nome": "Banco de Dados",
+        "cargaHoraria": 80,
+        "faltasHoras": 6,
+        "notas": {
+          "av1": 8.5,
+          "av2": 7.0
+        }
+      },
+      {
+        "nome": "Engenharia de Software",
+        "cargaHoraria": 60,
+        "faltasHoras": 3,
+        "notas": {
+          "av1": 9.0,
+          "av2": 8.5
+        }
+      }
+    ]
+  },
+
+  "teste.cenarios@gestaoacademica.com.br": {
+    "nome": "Mariana Costa",
+    "nascimento": "10/05/2002",
+    "cpf": "529.982.247-25",
+    "email": "teste.cenarios@gestaoacademica.com.br",
+    "senha": "123456",
+    "curso": "Análise e Dev. de Sistemas",
+    "periodo": "Noturno (19:00hrs a 22:30h)",
+    "docStatus": "*Documentação ok",
+    "courseStatus": "*Matriculado",
+    "disciplinas": [
+      {
+        "nome": "Programação Web",
+        "cargaHoraria": 80,
+        "faltasHoras": 20,
+        "notas": {
+          "av1": 7.0,
+          "av2": 7.0
+        }
+      },
+      {
+        "nome": "Estrutura de Dados",
+        "cargaHoraria": 80,
+        "faltasHoras": 8,
+        "notas": {
+          "av1": 4.0,
+          "av2": 4.0
+        }
+      },
+      {
+        "nome": "Redes de Computadores",
+        "cargaHoraria": 80,
+        "faltasHoras": 8,
+        "notas": {
+          "av1": 3.0,
+          "av2": 4.0
+        }
+      },
+      {
+        "nome": "Sistemas Operacionais",
+        "cargaHoraria": 80,
+        "faltasHoras": 24,
+        "notas": {
+          "av1": 8.0,
+          "av2": 8.0
+        }
+      }
+    ]
   }
 }

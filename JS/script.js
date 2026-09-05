@@ -160,7 +160,7 @@ if (studentName) {
         preencherTexto("studentPeriod", dados.periodo);
         preencherTexto("docStatus", dados.docStatus);
         preencherTexto("courseStatus", dados.courseStatus);
-        preencherTexto("studentHistory", dados.historico);
+        montarHistorico(dados.disciplinas);
 
         const studentEmail = document.getElementById("studentEmail");
         if (studentEmail) {
@@ -175,6 +175,50 @@ if (studentName) {
         preencherTexto("studentName", "Não foi possível carregar seus dados.");
       });
   }
+}
+
+
+// =============================
+// Montagem do Histórico Escolar
+// =============================
+
+function montarHistorico(disciplinas) {
+  const container = document.getElementById("studentHistory");
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!disciplinas || disciplinas.length === 0) {
+    container.innerHTML = "<p>Nenhuma disciplina cursada até o momento.</p>";
+    return;
+  }
+
+  disciplinas.forEach((disciplina) => {
+    const av1 = disciplina.notas?.av1 ?? 0;
+    const av2 = disciplina.notas?.av2 ?? 0;
+    const media = (av1 + av2) / 2;
+
+    let situacao = "Aprovado";
+    let classeSituacao = "situacao-aprovado";
+
+    if (media < 4) {
+      situacao = "Reprovado";
+      classeSituacao = "situacao-reprovado";
+    } else if (media < 7) {
+      situacao = "Recuperação";
+      classeSituacao = "situacao-recuperacao";
+    }
+
+    const card = document.createElement("div");
+    card.className = "historico-card";
+    card.innerHTML = `
+      <h3>${disciplina.nome}</h3>
+      <div class="historico-detalhe"><span>Carga horária</span><span>${disciplina.cargaHoraria}h</span></div>
+      <div class="historico-detalhe"><span>Média final</span><span>${media.toFixed(2)}</span></div>
+      <div class="historico-detalhe"><span>Situação</span><span class="${classeSituacao}">${situacao}</span></div>
+    `;
+    container.appendChild(card);
+  });
 }
 
 
@@ -199,6 +243,7 @@ if (menuBtn && sidebarMenu) {
 const btnInicio = document.getElementById("btnInicio");
 const btnEditar = document.getElementById("btnEditar");
 const btnHistorico = document.getElementById("btnHistorico");
+const btnNotas = document.getElementById("btnNotas");
 const btnFaltas = document.getElementById("btnFaltas");
 const tabs = document.querySelectorAll(".tab-content");
 
@@ -214,7 +259,143 @@ function abrirAba(abaId) {
 if (btnInicio) btnInicio.addEventListener("click", () => abrirAba("tabInicio"));
 if (btnEditar) btnEditar.addEventListener("click", () => abrirAba("tabEditar"));
 if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHistorico"));
-if (btnFaltas) btnFaltas.addEventListener("click", () => abrirAba("tabFaltas"));
+
+
+// =============================
+// Carregamento de Notas na Aba
+// =============================
+
+let notasCarregadas = false;
+const notasContainer = document.getElementById("notasContainer");
+
+if (btnNotas && notasContainer) {
+  btnNotas.addEventListener("click", () => {
+    abrirAba("tabNotas");
+    if (!notasCarregadas) {
+      carregarNotas();
+      notasCarregadas = true;
+    }
+  });
+}
+
+function carregarNotas() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return;
+
+  fetch("../dados.json")
+    .then((res) => {
+      if (!res.ok) throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      const usuario = data[emailLogado];
+      if (!usuario || !usuario.disciplinas || usuario.disciplinas.length === 0) {
+        notasContainer.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
+        return;
+      }
+
+      let html = "";
+      usuario.disciplinas.forEach((disciplina) => {
+        const av1 = disciplina.notas?.av1 ?? 0;
+        const av2 = disciplina.notas?.av2 ?? 0;
+        const media = (av1 + av2) / 2;
+
+        let situacao = "Aprovado";
+        let classeSituacao = "situacao-aprovado";
+        if (media < 4) {
+          situacao = "Reprovado";
+          classeSituacao = "situacao-reprovado";
+        } else if (media < 7) {
+          situacao = "Recuperação";
+          classeSituacao = "situacao-recuperacao";
+        }
+
+        html += `
+          <div class="nota-card">
+            <h3>${disciplina.nome}</h3>
+            <div class="nota-detalhe"><span>AV1</span><span>${av1.toFixed(1)}</span></div>
+            <div class="nota-detalhe"><span>AV2</span><span>${av2.toFixed(1)}</span></div>
+            <div class="nota-detalhe"><span>Média</span><span>${media.toFixed(2)}</span></div>
+            <div class="nota-detalhe"><span>Situação</span><span class="${classeSituacao}">${situacao}</span></div>
+          </div>
+        `;
+      });
+
+      notasContainer.innerHTML = html;
+    })
+    .catch((err) => {
+      console.error("Erro ao carregar notas:", err);
+      notasContainer.innerHTML = "<p>Erro ao carregar as notas. Tente novamente mais tarde.</p>";
+    });
+}
+
+
+// =============================
+// Carregamento de Faltas na Aba
+// =============================
+
+let faltasCarregadas = false;
+const faltasContainer = document.getElementById("faltasContainer");
+
+if (btnFaltas && faltasContainer) {
+  btnFaltas.addEventListener("click", () => {
+    abrirAba("tabFaltas");
+    if (!faltasCarregadas) {
+      carregarFaltas();
+      faltasCarregadas = true;
+    }
+  });
+}
+
+function carregarFaltas() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return;
+
+  fetch("../dados.json")
+    .then((res) => {
+      if (!res.ok) throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      const usuario = data[emailLogado];
+      if (!usuario || !usuario.disciplinas || usuario.disciplinas.length === 0) {
+        faltasContainer.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
+        return;
+      }
+
+      let html = "";
+      usuario.disciplinas.forEach((disciplina) => {
+        const cargaHoraria = disciplina.cargaHoraria || 0;
+        const faltasHoras = disciplina.faltasHoras || 0;
+        const presencaPercentual = cargaHoraria > 0
+          ? ((cargaHoraria - faltasHoras) / cargaHoraria) * 100
+          : 0;
+
+        let situacao = "Aprovado";
+        let classeSituacao = "situacao-aprovado";
+        if (presencaPercentual < 75) {
+          situacao = "Reprovado por faltas";
+          classeSituacao = "situacao-reprovado";
+        }
+
+        html += `
+          <div class="falta-card">
+            <h3>${disciplina.nome}</h3>
+            <div class="falta-detalhe"><span>Carga horária</span><span>${cargaHoraria}h</span></div>
+            <div class="falta-detalhe"><span>Faltas</span><span>${faltasHoras}h</span></div>
+            <div class="falta-detalhe"><span>Presença</span><span>${presencaPercentual.toFixed(1)}%</span></div>
+            <div class="falta-detalhe"><span>Situação</span><span class="${classeSituacao}">${situacao}</span></div>
+          </div>
+        `;
+      });
+
+      faltasContainer.innerHTML = html;
+    })
+    .catch((err) => {
+      console.error("Erro ao carregar faltas:", err);
+      faltasContainer.innerHTML = "<p>Erro ao carregar as informações de frequência. Tente novamente mais tarde.</p>";
+    });
+}
 
 
 // =============================
