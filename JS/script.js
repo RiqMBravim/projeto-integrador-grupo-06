@@ -218,6 +218,73 @@ if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHist
 if (btnNotas) btnNotas.addEventListener("click", () => abrirAba("tabNotas"));
 if (btnFaltas) btnFaltas.addEventListener("click", () => abrirAba("tabFaltas"));
 
+// =============================
+// Carregamento de Notas na Aba
+// =============================
+
+let notasCarregadas = false;
+const notasContainer = document.getElementById("notasContainer");
+
+if (btnNotas && notasContainer) {
+  btnNotas.addEventListener("click", () => {
+    abrirAba("tabNotas");
+    if (!notasCarregadas) {
+      carregarNotas();
+      notasCarregadas = true;
+    }
+  });
+}
+
+function carregarNotas() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return;
+
+  fetch("../dados.json")
+    .then((res) => {
+      if (!res.ok) throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => {
+      const usuario = data[emailLogado];
+      if (!usuario || !usuario.disciplinas || usuario.disciplinas.length === 0) {
+        notasContainer.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
+        return;
+      }
+
+      let html = "";
+      usuario.disciplinas.forEach((disciplina) => {
+        const av1 = disciplina.notas?.av1 ?? 0;
+        const av2 = disciplina.notas?.av2 ?? 0;
+        const media = (av1 + av2) / 2;
+
+        let situacao = "Aprovado";
+        let classeSituacao = "situacao-aprovado";
+        if (media < 4) {
+          situacao = "Reprovado";
+          classeSituacao = "situacao-reprovado";
+        } else if (media < 7) {
+          situacao = "Recuperação";
+          classeSituacao = "situacao-recuperacao";
+        }
+
+        html += `
+          <div class="nota-card">
+            <h3>${disciplina.nome}</h3>
+            <div class="nota-detalhe"><span>AV1</span><span>${av1.toFixed(1)}</span></div>
+            <div class="nota-detalhe"><span>AV2</span><span>${av2.toFixed(1)}</span></div>
+            <div class="nota-detalhe"><span>Média</span><span>${media.toFixed(2)}</span></div>
+            <div class="nota-detalhe"><span>Situação</span><span class="${classeSituacao}">${situacao}</span></div>
+          </div>
+        `;
+      });
+
+      notasContainer.innerHTML = html;
+    })
+    .catch((err) => {
+      console.error("Erro ao carregar notas:", err);
+      notasContainer.innerHTML = "<p>Erro ao carregar as notas. Tente novamente mais tarde.</p>";
+    });
+}
 
 // =============================
 // Logout
