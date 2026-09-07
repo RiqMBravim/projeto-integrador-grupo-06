@@ -344,6 +344,27 @@ if (btnLogout) {
 }
 
 // =============================
+// Controle de leitura de avisos
+// =============================
+
+function obterAvisosLidos() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return [];
+
+  const chave = "avisosLidos_" + emailLogado;
+  const dados = localStorage.getItem(chave);
+  return dados ? JSON.parse(dados) : [];
+}
+
+function salvarAvisosLidos(lista) {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return;
+
+  const chave = "avisosLidos_" + emailLogado;
+  localStorage.setItem(chave, JSON.stringify(lista));
+}
+
+// =============================
 // Seção de Avisos
 // =============================
 
