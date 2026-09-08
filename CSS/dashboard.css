@@ -449,3 +449,94 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Estilos para a aba Horários */
+.horarios-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dia-bloco {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #0284c7;
+  border-radius: 16px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.dia-bloco h2 {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 12px;
+}
+
+.aula-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #f8fafc;
+  margin-bottom: 8px;
+}
+
+.aula-card:last-child {
+  margin-bottom: 0;
+}
+
+.aula-horario {
+  flex-shrink: 0;
+  min-width: 110px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0284c7;
+}
+
+.aula-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.aula-disciplina {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.aula-meta {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+/* Opcional: ajustes para tema escuro */
+html[data-theme="dark"] .dia-bloco {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #0ea5e9;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] .aula-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+html[data-theme="dark"] .aula-horario {
+  color: #38bdf8;
+}
+
+html[data-theme="dark"] .aula-disciplina {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .aula-meta,
+html[data-theme="dark"] .dia-bloco h2 {
+  color: #94a3b8;
+}

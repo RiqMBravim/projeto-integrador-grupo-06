@@ -197,6 +197,7 @@ if (menuBtn && sidebarMenu) {
 
 let notasCarregadas = false;
 let faltasCarregadas = false;
+let horariosCarregados = false;
 
 function abrirAba(abaId) {
   document.querySelectorAll(".tab-content").forEach((tab) => tab.classList.remove("active"));
@@ -215,7 +216,8 @@ function abrirAba(abaId) {
     "tabEditar": "btnEditar",
     "tabHistorico": "btnHistorico",
     "tabNotas": "btnNotas",
-    "tabFaltas": "btnFaltas"
+    "tabFaltas": "btnFaltas",
+    "tabHorarios": "btnHorarios",
   };
 
   const idBotao = mapaBotoes[abaId];
@@ -231,6 +233,10 @@ function abrirAba(abaId) {
     carregarFaltas();
     faltasCarregadas = true;
   }
+  else if (abaId === "tabHorarios" && !horariosCarregados) {
+  carregarHorarios();
+  horariosCarregados = true;
+}
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -451,4 +457,96 @@ function atualizarBadgeAvisos(count) {
     badge.textContent = "0 não lidos";
     badge.style.display = "none";
   }
+}
+
+// =============================
+// Carregamento de Horários
+// =============================
+
+const ORDEM_DIAS = [
+  "Segunda-feira",
+  "Terça-feira",
+  "Quarta-feira",
+  "Quinta-feira",
+  "Sexta-feira",
+  "Sábado",
+  "Domingo"
+];
+
+function agruparPorDia(horarios) {
+  const grupos = {};
+
+  horarios.forEach((aula) => {
+    const dia = aula.dia || "Sem dia";
+    if (!grupos[dia]) grupos[dia] = [];
+    grupos[dia].push(aula);
+  });
+
+  Object.keys(grupos).forEach((dia) => {
+    grupos[dia].sort((a, b) => String(a.inicio).localeCompare(String(b.inicio)));
+  });
+
+  return grupos;
+}
+
+function montarGrade(horarios) {
+  const container = document.getElementById("horariosContainer");
+  if (!container) return;
+
+  if (!horarios || horarios.length === 0) {
+    container.innerHTML = "<p>Nenhum horário cadastrado para este aluno.</p>";
+    return;
+  }
+
+  const grupos = agruparPorDia(horarios);
+  const diasOrdenados = Object.keys(grupos).sort((a, b) => {
+    const ia = ORDEM_DIAS.indexOf(a);
+    const ib = ORDEM_DIAS.indexOf(b);
+    return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+  });
+
+  container.innerHTML = "";
+
+  diasOrdenados.forEach((dia) => {
+    const bloco = document.createElement("section");
+    bloco.className = "dia-bloco";
+
+    const titulo = document.createElement("h2");
+    titulo.textContent = dia;
+    bloco.appendChild(titulo);
+
+    grupos[dia].forEach((aula) => {
+      const card = document.createElement("article");
+      card.className = "aula-card";
+      card.innerHTML = `
+        <p class="aula-horario">${aula.inicio} – ${aula.fim}</p>
+        <div class="aula-info">
+          <p class="aula-disciplina">${aula.disciplina}</p>
+          <p class="aula-meta">Professor: ${aula.professor}</p>
+          <p class="aula-meta">${aula.sala}</p>
+        </div>
+      `;
+      bloco.appendChild(card);
+    });
+
+    container.appendChild(bloco);
+  });
+}
+
+function carregarHorarios() {
+  const container = document.getElementById("horariosContainer");
+  if (!container) return;
+
+  buscarDadosUsuario()
+    .then((usuario) => {
+      if (!usuario || !usuario.horarios || usuario.horarios.length === 0) {
+        container.innerHTML = "<p>Nenhum horário cadastrado para este aluno.</p>";
+        return;
+      }
+      montarGrade(usuario.horarios);
+    })
+    .catch((err) => {
+      console.error("Erro ao carregar horários:", err);
+      container.innerHTML = "<p>Erro ao carregar os horários. Tente novamente mais tarde.</p>";
+    });
 }
