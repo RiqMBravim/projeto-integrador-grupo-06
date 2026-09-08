@@ -9,6 +9,20 @@
     "periodo": "Diurno (7:00hrs a 13:20h)",
     "docStatus": "*Documentação pendente",
     "courseStatus": "*Esperando lista de espera",
+    "avisos": [
+      {
+        "titulo": "Pendência de Documentação",
+        "conteudo": "Sua documentação de matrícula possui pendências. Favor enviar os documentos faltantes na secretaria.",
+        "data": "05/09/2026",
+        "lido": false
+      },
+      {
+        "titulo": "Rematrícula 2026/2",
+        "conteudo": "O período para solicitação de ajuste de grade estará disponível em breve.",
+        "data": "01/09/2026",
+        "lido": true
+      }
+    ],
     "disciplinas": [
       {
         "nome": "Banco de Dados",
@@ -62,11 +76,25 @@
     "nascimento": "15/03/2001",
     "cpf": "987.654.321-11",
     "email": "ana.maria@gestaoacademica.com.br",
-    "senha": "123456",
+    "senha": "654321",
     "curso": "Análise e Dev. de Sistemas",
     "periodo": "Noturno (19:00hrs a 22:30h)",
     "docStatus": "*Documentação ok",
     "courseStatus": "*Matriculado",
+    "avisos": [
+      {
+        "titulo": "Palestra de Inovação Acadêmica",
+        "conteudo": "Convidamos todos os alunos para a palestra sobre IA no mercado de trabalho nesta quinta-feira no auditório.",
+        "data": "04/09/2026",
+        "lido": false
+      },
+      {
+        "titulo": "Calendário de Provas Regimentais",
+        "conteudo": "As datas das avaliações do semestre já estão disponíveis no portal.",
+        "data": "28/08/2026",
+        "lido": true
+      }
+    ],
     "disciplinas": [
       {
         "nome": "Banco de Dados",
@@ -125,6 +153,20 @@
     "periodo": "Noturno (19:00hrs a 22:30h)",
     "docStatus": "*Documentação ok",
     "courseStatus": "*Matriculado",
+    "avisos": [
+      {
+        "titulo": "Atenção ao limite de faltas",
+        "conteudo": "Você ultrapassou o limite de faltas em algumas disciplinas. Verifique seu painel de frequência.",
+        "data": "06/09/2026",
+        "lido": false
+      },
+      {
+        "titulo": "Abertura do Plantão de Dúvidas",
+        "conteudo": "Monitorias de Programação Web e Estrutura de Dados disponíveis todas as terças-feiras.",
+        "data": "02/09/2026",
+        "lido": false
+      }
+    ],
     "disciplinas": [
       {
         "nome": "Programação Web",

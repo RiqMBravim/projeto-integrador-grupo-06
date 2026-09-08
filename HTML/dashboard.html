@@ -29,26 +29,26 @@
       <div class="menu-icon" id="menuBtn">☰</div>
 
       <div class="sidebar-buttons" id="sidebarMenu">
-        <button class="btn-action" id="btnInicio"><br>Página Inicial</button>
-        <button class="btn-action" id="btnEditar"><br>Editar Informações</button>
-        <button class="btn-action" id="btnHistorico"><br>Visualizar Histórico</button>
-        <button class="btn-action" id="btnNotas"><br>Consulta de Notas</button>
-        <button class="btn-action" id="btnFaltas"><br>Consulta de Faltas</button>
-        <button type="button" class="btn-action" id="btnHorarios" onclick="window.location.href='horarios.html'"><br>Consulta de Horários</button>
-        <button class="btn-action logout" id="btnLogout"><br>Sair</button>
+        <button class="btn-action active" id="btnInicio" onclick="abrirAba('tabInicio')">Página Inicial</button>
+        <button class="btn-action" id="btnEditar" onclick="abrirAba('tabEditar')">Editar Informações</button>
+        <button class="btn-action" id="btnHistorico" onclick="abrirAba('tabHistorico')">Visualizar Histórico</button>
+        <button class="btn-action" id="btnNotas" onclick="abrirAba('tabNotas')">Consulta de Notas</button>
+        <button class="btn-action" id="btnFaltas" onclick="abrirAba('tabFaltas')">Consulta de Faltas</button>
+        <button type="button" class="btn-action" id="btnHorarios" onclick="window.location.href='horarios.html'">Consulta de Horários</button>
+        <button class="btn-action logout" id="btnLogout">Sair</button>
       </div>
     </aside>
 
     <!-- Área Principal com Navegação por Abas -->
     <main class="main-card">
-      
-      <!-- Página inicial  -->
+       
+      <!-- Página Inicial -->
       <section id="tabInicio" class="tab-content active">
         <h2>Página inicial</h2>
 
         <div class="profile-row">
           <div class="avatar-container">
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke="currentColor">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
@@ -63,41 +63,113 @@
 
         <hr class="line-divider">
 
-        <div class="info-card">
-          <h4>Curso Atual</h4>
-          <p class="highlight-text" id="studentCourse">--</p>
-          <p class="sub-text"><strong>Período:</strong> <span id="studentPeriod">--</span></p>
+        <div class="info-grid">
+          <div class="info-card">
+            <h4>Curso Atual</h4>
+            <p class="highlight-text" id="studentCourse">--</p>
+            <p class="sub-text"><strong>Período:</strong> <span id="studentPeriod">--</span></p>
+          </div>
+
+          <!-- Atalhos Rápidos de Navegação -->
+          <div class="info-card quick-access-card">
+            <h4>Acesso Rápido</h4>
+            <div class="quick-links">
+              <button class="btn-quick" onclick="abrirAba('tabNotas')">
+                <svg class="quick-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                <span>Ver Notas</span>
+              </button>
+              <button class="btn-quick" onclick="abrirAba('tabFaltas')">
+                <svg class="quick-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Ver Faltas</span>
+              </button>
+              <button class="btn-quick" onclick="abrirAba('tabHistorico')">
+                <svg class="quick-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Histórico</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <hr class="line-divider">
+
+        <!-- Seção de Avisos Acadêmicos -->
+        <div class="avisos-section">
+          <div class="avisos-header">
+            <div class="avisos-title-group">
+              <span class="bell-icon" id="bellIcon">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </span>
+              <h3>Avisos Acadêmicos</h3>
+            </div>
+            <span class="badge-unread" id="badgeAvisos">0 não lidos</span>
+          </div>
+          <div id="avisosContainer" class="avisos-container">
+            <p>Carregando avisos...</p>
+          </div>
         </div>
       </section>
 
-      <!-- Editar informações -->
+      <!-- Editar Informações -->
       <section id="tabEditar" class="tab-content">
-        <h2>Editar Informações</h2>
+        <div class="tab-header">
+          <button class="btn-voltar" onclick="abrirAba('tabInicio')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Início</span>
+          </button>
+          <h2>Editar Informações</h2>
+        </div>
         <p class="sub-text">Atualização de cadastro disponível junto à secretaria.</p>
       </section>
 
-      <!-- Histórico escolar  -->
+      <!-- Histórico Escolar -->
       <section id="tabHistorico" class="tab-content">
-        <h2>Histórico Escolar</h2>
-        <div id="studentHistory" class="historico-container">
-    <!-- Cards de histórico serão inseridos via JavaScript -->
+        <div class="tab-header">
+          <button class="btn-voltar" onclick="abrirAba('tabInicio')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Início</span>
+          </button>
+          <h2>Histórico Escolar</h2>
         </div>
+        <div id="studentHistory" class="historico-container"></div>
       </section>
 
-      <!-- Consulta de notas -->
+      <!-- Consulta de Notas -->
       <section id="tabNotas" class="tab-content">
-        <h2>Consulta de Notas</h2>
-        <div id="notasContainer" class="notas-container">
-      <!-- Os cards de disciplinas serão inseridos via JavaScript -->
+        <div class="tab-header">
+          <button class="btn-voltar" onclick="abrirAba('tabInicio')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Início</span>
+          </button>
+          <h2>Consulta de Notas</h2>
         </div>
+        <div id="notasContainer" class="notas-container"></div>
       </section>
 
-      <!-- Consulta de faltas  -->
+      <!-- Consulta de Faltas -->
       <section id="tabFaltas" class="tab-content">
-        <h2>Consulta de Faltas</h2>
-        <div id="faltasContainer" class="faltas-container">
-      <!-- Os dados de frequência serão inseridos via JavaScript -->
+        <div class="tab-header">
+          <button class="btn-voltar" onclick="abrirAba('tabInicio')">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Voltar ao Início</span>
+          </button>
+          <h2>Consulta de Faltas</h2>
         </div>
+        <div id="faltasContainer" class="faltas-container"></div>
       </section>
 
     </main>
