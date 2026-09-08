@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  color: #2b2d42;
+  min-height: 100vh;
+}
+
+.topo {
+  padding: 24px 32px 16px;
+}
+
+.topo h1 {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.topo #nomeAluno {
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.acoes a,
+.acoes button {
+  display: inline-block;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  color: #0284c7;
+}
+
+.acoes a:hover,
+.acoes button:hover {
+  background: #0284c7;
+  color: #fff;
+  border-color: #0284c7;
+}
+
+.acoes button#btnLogout {
+  color: #ef4444;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.acoes button#btnLogout:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.conteudo {
+  padding: 0 32px 32px;
+}
+
+.erro {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+#gradeHorarios {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dia-bloco {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.dia-bloco h2 {
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0284c7;
+  margin-bottom: 14px;
+}
+
+.aula-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px;
+  background: #f8fafc;
+  margin-bottom: 10px;
+}
+
+.aula-card:last-child {
+  margin-bottom: 0;
+}
+
+.aula-horario {
+  font-weight: 700;
+  color: #2b2d42;
+  margin-bottom: 6px;
+}
+
+.aula-disciplina {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.aula-meta {
+  font-size: 13px;
+  color: #64748b;
+}
+
+@media (max-width: 640px) {
+  .topo,
+  .conteudo {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .topo {
+    padding-top: 16px;
+  }
+
+  .dia-bloco {
+    padding: 16px;
+  }
+}
