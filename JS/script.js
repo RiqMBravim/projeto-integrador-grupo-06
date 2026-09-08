@@ -411,7 +411,8 @@ function montarAvisos(avisos) {
   });
 }
 
-function alternarLido(btnElement) {
+function alternarLido(btnElement, tituloAviso) {
+  // Altera o visual do card
   const card = btnElement.closest(".aviso-card");
   if (card) {
     card.classList.remove("nao-lido");
@@ -420,6 +421,14 @@ function alternarLido(btnElement) {
 
   btnElement.outerHTML = `<span class="sub-text" style="font-size: 11px;">✓ Lido</span>`;
 
+  // Atualiza a lista de avisos lidos no localStorage
+  const avisosLidos = obterAvisosLidos();
+  if (!avisosLidos.includes(tituloAviso)) {
+    avisosLidos.push(tituloAviso);
+    salvarAvisosLidos(avisosLidos);
+  }
+
+  // Atualiza o badge de não lidos
   const badge = document.getElementById("badgeAvisos");
   if (badge) {
     let countAtual = parseInt(badge.textContent) || 0;
