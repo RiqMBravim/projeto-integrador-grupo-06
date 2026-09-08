@@ -1,0 +1,306 @@
+/* Toggle de tema — canto superior direito */
+.tema-switch {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 2000;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.tema-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.tema-slider {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  border: 1px solid #94a3b8;
+  transition: background-color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.tema-slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.2);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.35s ease;
+}
+
+.tema-switch input:checked + .tema-slider {
+  background: #0284c7;
+  border-color: #0369a1;
+}
+
+.tema-switch input:checked + .tema-slider::before {
+  transform: translateX(24px);
+  background: #f8fafc;
+}
+
+.tema-switch input:focus-visible + .tema-slider {
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.35);
+}
+
+/* Transição suave entre temas */
+html.tema-transicao body,
+html.tema-transicao body *,
+html.tema-transicao body *::before,
+html.tema-transicao body *::after {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease !important;
+}
+
+/* ========== Modo escuro ========== */
+html[data-theme="dark"] body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .tema-slider {
+  background: #334155;
+  border-color: #475569;
+}
+
+html[data-theme="dark"] .tema-switch input:checked + .tema-slider {
+  background: #0ea5e9;
+  border-color: #0284c7;
+}
+
+/* Login */
+html[data-theme="dark"] .header-title h1 {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .login-card,
+html[data-theme="dark"] .modal-content {
+  background-color: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .login-card h2,
+html[data-theme="dark"] .modal-content h3,
+html[data-theme="dark"] .close-btn:hover {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .input-group label,
+html[data-theme="dark"] .modal-content p,
+html[data-theme="dark"] .close-btn {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .input-group input {
+  background-color: #0f172a;
+  border-color: #475569;
+  color: #e2e8f0;
+}
+
+html[data-theme="dark"] .input-group input:focus {
+  background-color: #0f172a;
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2);
+}
+
+html[data-theme="dark"] .input-group input[aria-invalid="true"] {
+  border-color: #f87171;
+  background-color: #450a0a;
+}
+
+html[data-theme="dark"] .login-footer a {
+  color: #38bdf8;
+}
+
+html[data-theme="dark"] .login-footer a:hover {
+  color: #7dd3fc;
+}
+
+html[data-theme="dark"] .modal {
+  background-color: rgba(2, 6, 23, 0.65);
+}
+
+html[data-theme="dark"] .login-error {
+  color: #fca5a5;
+}
+
+/* Dashboard */
+html[data-theme="dark"] .top-title {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .sidebar,
+html[data-theme="dark"] .main-card {
+  background-color: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] .menu-icon {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .menu-icon:hover {
+  background-color: #334155;
+}
+
+html[data-theme="dark"] .btn-action {
+  background: #0f172a;
+  border-color: #334155;
+  color: #38bdf8;
+}
+
+html[data-theme="dark"] .btn-action:hover {
+  background-color: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .btn-action.logout {
+  color: #f87171;
+  background: #450a0a;
+  border-color: #7f1d1d;
+}
+
+html[data-theme="dark"] .btn-action.logout:hover {
+  background-color: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .main-card h2,
+html[data-theme="dark"] .profile-details h3,
+html[data-theme="dark"] .highlight-text,
+html[data-theme="dark"] .nota-card h3,
+html[data-theme="dark"] .historico-card h3,
+html[data-theme="dark"] .falta-card h3 {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .avatar-container {
+  background-color: #0f172a;
+  border-color: #475569;
+}
+
+html[data-theme="dark"] .avatar-container svg {
+  stroke: #94a3b8;
+}
+
+html[data-theme="dark"] .profile-details p,
+html[data-theme="dark"] .info-card h4,
+html[data-theme="dark"] .sub-text {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .profile-details a {
+  color: #38bdf8;
+}
+
+html[data-theme="dark"] .line-divider {
+  border-top-color: #334155;
+}
+
+html[data-theme="dark"] .info-card,
+html[data-theme="dark"] .nota-card,
+html[data-theme="dark"] .historico-card,
+html[data-theme="dark"] .falta-card {
+  background-color: #0f172a;
+  border-color: #334155;
+}
+
+html[data-theme="dark"] .nota-detalhe,
+html[data-theme="dark"] .historico-detalhe,
+html[data-theme="dark"] .falta-detalhe,
+html[data-theme="dark"] .history-content {
+  color: #cbd5e1;
+}
+
+html[data-theme="dark"] .situacao-aprovado {
+  color: #4ade80;
+}
+
+html[data-theme="dark"] .situacao-reprovado {
+  color: #f87171;
+}
+
+html[data-theme="dark"] .situacao-recuperacao {
+  color: #fbbf24;
+}
+
+/* Horários */
+html[data-theme="dark"] .topo h1,
+html[data-theme="dark"] .aula-disciplina {
+  color: #f8fafc;
+}
+
+html[data-theme="dark"] .topo #nomeAluno,
+html[data-theme="dark"] .dia-bloco h2,
+html[data-theme="dark"] .aula-meta {
+  color: #94a3b8;
+}
+
+html[data-theme="dark"] .acoes a,
+html[data-theme="dark"] .acoes button {
+  background: #0f172a;
+  border-color: #334155;
+  color: #38bdf8;
+}
+
+html[data-theme="dark"] .acoes a:hover,
+html[data-theme="dark"] .acoes button:hover {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .acoes button#btnLogout {
+  color: #f87171;
+  background: #450a0a;
+  border-color: #7f1d1d;
+}
+
+html[data-theme="dark"] .acoes button#btnLogout:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+html[data-theme="dark"] .erro {
+  background: #450a0a;
+  color: #fecaca;
+  border-color: #7f1d1d;
+}
+
+html[data-theme="dark"] .dia-bloco {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #0ea5e9;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+html[data-theme="dark"] .aula-card {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+html[data-theme="dark"] .aula-horario {
+  color: #38bdf8;
+}

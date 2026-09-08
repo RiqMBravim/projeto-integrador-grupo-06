@@ -67,9 +67,11 @@ function montarGrade(horarios) {
       card.className = "aula-card";
       card.innerHTML = `
         <p class="aula-horario">${aula.inicio} – ${aula.fim}</p>
-        <p class="aula-disciplina">${aula.disciplina}</p>
-        <p class="aula-meta">Professor: ${aula.professor}</p>
-        <p class="aula-meta">${aula.sala}</p>
+        <div class="aula-info">
+          <p class="aula-disciplina">${aula.disciplina}</p>
+          <p class="aula-meta">Professor: ${aula.professor}</p>
+          <p class="aula-meta">${aula.sala}</p>
+        </div>
       `;
       bloco.appendChild(card);
     });

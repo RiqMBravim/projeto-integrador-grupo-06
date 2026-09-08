@@ -4,9 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Grade de Horários</title>
+  <script>
+    (function () {
+      if (localStorage.getItem("tema") === "escuro") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
   <link rel="stylesheet" href="../CSS/horarios.css">
+  <link rel="stylesheet" href="../CSS/tema.css">
 </head>
 <body>
+  <label class="tema-switch" title="Alternar tema claro/escuro">
+    <input type="checkbox" id="temaToggle" aria-label="Alternar modo claro e escuro">
+    <span class="tema-slider"></span>
+  </label>
+
   <header class="topo">
     <h1>Grade de Horários</h1>
     <p id="nomeAluno">Carregando...</p>
@@ -23,6 +36,7 @@
     </div>
   </main>
 
+  <script src="../JS/tema.js"></script>
   <script src="../JS/horarios.js"></script>
 </body>
 </html>
