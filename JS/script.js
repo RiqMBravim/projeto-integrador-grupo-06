@@ -382,12 +382,17 @@ function montarAvisos(avisos) {
     return;
   }
 
-  const naoLidosCount = avisos.filter((a) => !a.lido).length;
+  // Obtém a lista de títulos dos avisos já lidos (persistidos)
+  const avisosLidos = obterAvisosLidos();
+
+  // Conta quantos não lidos ainda existem
+  const naoLidosCount = avisos.filter((aviso) => !avisosLidos.includes(aviso.titulo)).length;
   atualizarBadgeAvisos(naoLidosCount);
 
   avisos.forEach((aviso, index) => {
+    const lido = avisosLidos.includes(aviso.titulo);
     const card = document.createElement("div");
-    card.className = `aviso-card ${aviso.lido ? "lido" : "nao-lido"}`;
+    card.className = `aviso-card ${lido ? "lido" : "nao-lido"}`;
 
     card.innerHTML = `
       <div class="aviso-header-info">
@@ -396,8 +401,8 @@ function montarAvisos(avisos) {
       </div>
       <p>${aviso.conteudo}</p>
       ${
-        !aviso.lido
-          ? `<button class="btn-marcar-lido" onclick="alternarLido(this, ${index})">Marcar como lido</button>`
+        !lido
+          ? `<button class="btn-marcar-lido" onclick="alternarLido(this, '${aviso.titulo}')">Marcar como lido</button>`
           : `<span class="sub-text" style="font-size: 11px;">✓ Lido</span>`
       }
     `;
