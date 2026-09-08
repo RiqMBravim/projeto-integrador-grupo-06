@@ -8,7 +8,6 @@ function normalizarCpf(valor) {
 
 function preencherTexto(id, valor) {
   const elemento = document.getElementById(id);
-
   if (elemento && valor !== undefined && valor !== null) {
     elemento.textContent = valor;
   }
@@ -19,6 +18,17 @@ function encerrarSessao() {
   window.location.replace("index.html");
 }
 
+function buscarDadosUsuario() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return Promise.reject("Usuário não logado");
+
+  return fetch("../dados.json")
+    .then((res) => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((data) => data[emailLogado]);
+}
 
 // =============================
 // Login
@@ -34,56 +44,31 @@ if (loginForm) {
   const identificadorCampo = document.getElementById("email");
   const senhaCampo = document.getElementById("senha");
 
-  // Modal de suporte
   if (btn && modal && close) {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       modal.style.display = "flex";
     });
 
-    close.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-
-    window.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
-    });
-
+    close.addEventListener("click", () => modal.style.display = "none");
+    window.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.style.display === "flex") {
-        modal.style.display = "none";
-      }
+      if (e.key === "Escape" && modal.style.display === "flex") modal.style.display = "none";
     });
   }
 
   loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (loginError) {
-      loginError.textContent = "";
-    }
-
-    if (identificadorCampo) {
-      identificadorCampo.removeAttribute("aria-invalid");
-    }
-
-    if (senhaCampo) {
-      senhaCampo.removeAttribute("aria-invalid");
-    }
+    if (loginError) loginError.textContent = "";
+    if (identificadorCampo) identificadorCampo.removeAttribute("aria-invalid");
+    if (senhaCampo) senhaCampo.removeAttribute("aria-invalid");
 
     const identificadorInput = identificadorCampo.value.trim().toLowerCase();
     const senhaInput = senhaCampo.value;
 
     fetch("../dados.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
-        }
-
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((usuariosDB) => {
         const cpfDigitado = normalizarCpf(identificadorInput);
         const pareceEmail = identificadorInput.includes("@");
@@ -91,18 +76,11 @@ if (loginForm) {
         const usuario = Object.values(usuariosDB).find((item) => {
           const emailUsuario = String(item.email || "").trim().toLowerCase();
           const cpfUsuario = normalizarCpf(item.cpf);
-
-          const emailConfere = emailUsuario === identificadorInput;
-          const cpfConfere = !pareceEmail && cpfDigitado.length > 0 && cpfUsuario === cpfDigitado;
-
-          return emailConfere || cpfConfere;
+          return emailUsuario === identificadorInput || (!pareceEmail && cpfDigitado.length > 0 && cpfUsuario === cpfDigitado);
         });
 
         if (!usuario || usuario.senha !== senhaInput) {
-          if (loginError) {
-            loginError.textContent = "E-mail/CPF ou senha inválidos.";
-          }
-
+          if (loginError) loginError.textContent = "E-mail/CPF ou senha inválidos.";
           identificadorCampo.setAttribute("aria-invalid", "true");
           senhaCampo.setAttribute("aria-invalid", "true");
           senhaCampo.value = "";
@@ -115,68 +93,47 @@ if (loginForm) {
       })
       .catch((err) => {
         console.error("Erro ao realizar login:", err);
-
-        if (loginError) {
-          loginError.textContent = "Não foi possível realizar o login. Tente novamente.";
-        }
+        if (loginError) loginError.textContent = "Não foi possível realizar o login. Tente novamente.";
       });
   });
 }
 
-
 // =============================
-// Dashboard / validação da sessão
+// Dashboard / Validação da Sessão
 // =============================
 
 const studentName = document.getElementById("studentName");
 
 if (studentName) {
-  const emailLogado = localStorage.getItem("usuarioLogado");
+  buscarDadosUsuario()
+    .then((dados) => {
+      if (!dados) {
+        encerrarSessao();
+        return;
+      }
 
-  if (!emailLogado) {
-    window.location.replace("index.html");
-  } else {
-    fetch("../dados.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
-        }
+      preencherTexto("studentName", dados.nome);
+      preencherTexto("studentBirth", dados.nascimento);
+      preencherTexto("studentCpf", dados.cpf);
+      preencherTexto("studentCourse", dados.curso);
+      preencherTexto("studentPeriod", dados.periodo);
+      preencherTexto("docStatus", dados.docStatus);
+      preencherTexto("courseStatus", dados.courseStatus);
+      
+      montarHistorico(dados.disciplinas);
+      montarAvisos(dados.avisos || []);
 
-        return res.json();
-      })
-      .then((usuariosDB) => {
-        const dados = usuariosDB[emailLogado];
-
-        // Um valor no localStorage não é suficiente: o usuário precisa existir na base.
-        if (!dados) {
-          encerrarSessao();
-          return;
-        }
-
-        preencherTexto("studentName", dados.nome);
-        preencherTexto("studentBirth", dados.nascimento);
-        preencherTexto("studentCpf", dados.cpf);
-        preencherTexto("studentCourse", dados.curso);
-        preencherTexto("studentPeriod", dados.periodo);
-        preencherTexto("docStatus", dados.docStatus);
-        preencherTexto("courseStatus", dados.courseStatus);
-        montarHistorico(dados.disciplinas);
-
-        const studentEmail = document.getElementById("studentEmail");
-        if (studentEmail) {
-          studentEmail.textContent = dados.email;
-          studentEmail.href = "mailto:" + dados.email;
-        }
-      })
-      .catch((err) => {
-        // Falha de carregamento não significa que a credencial ficou inválida.
-        // Mantemos a sessão e exibimos um estado de erro, evitando loop de redirecionamento.
-        console.error("Erro ao carregar dados do dashboard:", err);
-        preencherTexto("studentName", "Não foi possível carregar seus dados.");
-      });
-  }
+      const studentEmail = document.getElementById("studentEmail");
+      if (studentEmail) {
+        studentEmail.textContent = dados.email;
+        studentEmail.href = "mailto:" + dados.email;
+      }
+    })
+    .catch((err) => {
+      console.error("Erro ao carregar dados do dashboard:", err);
+      preencherTexto("studentName", "Não foi possível carregar seus dados.");
+    });
 }
-
 
 // =============================
 // Montagem do Histórico Escolar
@@ -221,9 +178,8 @@ function montarHistorico(disciplinas) {
   });
 }
 
-
 // =============================
-// Menu retrátil
+// Menu Retrátil
 // =============================
 
 const menuBtn = document.getElementById("menuBtn");
@@ -235,62 +191,64 @@ if (menuBtn && sidebarMenu) {
   });
 }
 
-
 // =============================
-// Navegação de abas
+// Navegação por Abas
 // =============================
 
-const btnInicio = document.getElementById("btnInicio");
-const btnEditar = document.getElementById("btnEditar");
-const btnHistorico = document.getElementById("btnHistorico");
-const btnNotas = document.getElementById("btnNotas");
-const btnFaltas = document.getElementById("btnFaltas");
-const tabs = document.querySelectorAll(".tab-content");
+let notasCarregadas = false;
+let faltasCarregadas = false;
 
 function abrirAba(abaId) {
-  tabs.forEach((tab) => tab.classList.remove("active"));
+  document.querySelectorAll(".tab-content").forEach((tab) => tab.classList.remove("active"));
+  document.querySelectorAll(".sidebar-buttons .btn-action").forEach((btn) => btn.classList.remove("active"));
 
   const abaAlvo = document.getElementById(abaId);
   if (abaAlvo) {
     abaAlvo.classList.add("active");
+  } else {
+    console.error(`Aba com ID "${abaId}" não encontrada.`);
+    return;
   }
+
+  const mapaBotoes = {
+    "tabInicio": "btnInicio",
+    "tabEditar": "btnEditar",
+    "tabHistorico": "btnHistorico",
+    "tabNotas": "btnNotas",
+    "tabFaltas": "btnFaltas"
+  };
+
+  const idBotao = mapaBotoes[abaId];
+  if (idBotao) {
+    const btnAtivo = document.getElementById(idBotao);
+    if (btnAtivo) btnAtivo.classList.add("active");
+  }
+
+  if (abaId === "tabNotas" && !notasCarregadas) {
+    carregarNotas();
+    notasCarregadas = true;
+  } else if (abaId === "tabFaltas" && !faltasCarregadas) {
+    carregarFaltas();
+    faltasCarregadas = true;
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-if (btnInicio) btnInicio.addEventListener("click", () => abrirAba("tabInicio"));
-if (btnEditar) btnEditar.addEventListener("click", () => abrirAba("tabEditar"));
-if (btnHistorico) btnHistorico.addEventListener("click", () => abrirAba("tabHistorico"));
-
+window.abrirAba = abrirAba;
 
 // =============================
-// Carregamento de Notas na Aba
+// Carregamento de Notas
 // =============================
-
-let notasCarregadas = false;
-const notasContainer = document.getElementById("notasContainer");
-
-if (btnNotas && notasContainer) {
-  btnNotas.addEventListener("click", () => {
-    abrirAba("tabNotas");
-    if (!notasCarregadas) {
-      carregarNotas();
-      notasCarregadas = true;
-    }
-  });
-}
 
 function carregarNotas() {
-  const emailLogado = localStorage.getItem("usuarioLogado");
-  if (!emailLogado) return;
+  const container = document.getElementById("notasContainer");
+  if (!container) return;
 
-  fetch("../dados.json")
-    .then((res) => {
-      if (!res.ok) throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
-      return res.json();
-    })
-    .then((data) => {
-      const usuario = data[emailLogado];
+  buscarDadosUsuario()
+    .then((usuario) => {
       if (!usuario || !usuario.disciplinas || usuario.disciplinas.length === 0) {
-        notasContainer.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
+        container.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
         return;
       }
 
@@ -321,45 +279,26 @@ function carregarNotas() {
         `;
       });
 
-      notasContainer.innerHTML = html;
+      container.innerHTML = html;
     })
     .catch((err) => {
       console.error("Erro ao carregar notas:", err);
-      notasContainer.innerHTML = "<p>Erro ao carregar as notas. Tente novamente mais tarde.</p>";
+      container.innerHTML = "<p>Erro ao carregar as notas. Tente novamente mais tarde.</p>";
     });
 }
 
-
 // =============================
-// Carregamento de Faltas na Aba
+// Carregamento de Faltas
 // =============================
-
-let faltasCarregadas = false;
-const faltasContainer = document.getElementById("faltasContainer");
-
-if (btnFaltas && faltasContainer) {
-  btnFaltas.addEventListener("click", () => {
-    abrirAba("tabFaltas");
-    if (!faltasCarregadas) {
-      carregarFaltas();
-      faltasCarregadas = true;
-    }
-  });
-}
 
 function carregarFaltas() {
-  const emailLogado = localStorage.getItem("usuarioLogado");
-  if (!emailLogado) return;
+  const container = document.getElementById("faltasContainer");
+  if (!container) return;
 
-  fetch("../dados.json")
-    .then((res) => {
-      if (!res.ok) throw new Error(`Falha ao carregar dados: HTTP ${res.status}`);
-      return res.json();
-    })
-    .then((data) => {
-      const usuario = data[emailLogado];
+  buscarDadosUsuario()
+    .then((usuario) => {
       if (!usuario || !usuario.disciplinas || usuario.disciplinas.length === 0) {
-        faltasContainer.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
+        container.innerHTML = "<p>Nenhuma disciplina encontrada.</p>";
         return;
       }
 
@@ -367,9 +306,7 @@ function carregarFaltas() {
       usuario.disciplinas.forEach((disciplina) => {
         const cargaHoraria = disciplina.cargaHoraria || 0;
         const faltasHoras = disciplina.faltasHoras || 0;
-        const presencaPercentual = cargaHoraria > 0
-          ? ((cargaHoraria - faltasHoras) / cargaHoraria) * 100
-          : 0;
+        const presencaPercentual = cargaHoraria > 0 ? ((cargaHoraria - faltasHoras) / cargaHoraria) * 100 : 0;
 
         let situacao = "Aprovado";
         let classeSituacao = "situacao-aprovado";
@@ -389,23 +326,129 @@ function carregarFaltas() {
         `;
       });
 
-      faltasContainer.innerHTML = html;
+      container.innerHTML = html;
     })
     .catch((err) => {
       console.error("Erro ao carregar faltas:", err);
-      faltasContainer.innerHTML = "<p>Erro ao carregar as informações de frequência. Tente novamente mais tarde.</p>";
+      container.innerHTML = "<p>Erro ao carregar as informações de frequência. Tente novamente mais tarde.</p>";
     });
 }
-
 
 // =============================
 // Logout
 // =============================
 
 const btnLogout = document.getElementById("btnLogout");
-
 if (btnLogout) {
-  btnLogout.addEventListener("click", () => {
-    encerrarSessao();
+  btnLogout.addEventListener("click", encerrarSessao);
+}
+
+// =============================
+// Controle de leitura de avisos
+// =============================
+
+function obterAvisosLidos() {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return [];
+
+  const chave = "avisosLidos_" + emailLogado;
+  const dados = localStorage.getItem(chave);
+  return dados ? JSON.parse(dados) : [];
+}
+
+function salvarAvisosLidos(lista) {
+  const emailLogado = localStorage.getItem("usuarioLogado");
+  if (!emailLogado) return;
+
+  const chave = "avisosLidos_" + emailLogado;
+  localStorage.setItem(chave, JSON.stringify(lista));
+}
+
+// =============================
+// Seção de Avisos
+// =============================
+
+function montarAvisos(avisos) {
+  const container = document.getElementById("avisosContainer");
+  const badge = document.getElementById("badgeAvisos");
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!avisos || avisos.length === 0) {
+    container.innerHTML = "<p class='sub-text'>Nenhum aviso disponível no momento.</p>";
+    if (badge) badge.style.display = "none";
+    return;
+  }
+
+  // Obtém a lista de títulos dos avisos já lidos (persistidos)
+  const avisosLidos = obterAvisosLidos();
+
+  // Conta quantos não lidos ainda existem
+  const naoLidosCount = avisos.filter((aviso) => !avisosLidos.includes(aviso.titulo)).length;
+  atualizarBadgeAvisos(naoLidosCount);
+
+  avisos.forEach((aviso, index) => {
+    const lido = avisosLidos.includes(aviso.titulo);
+    const card = document.createElement("div");
+    card.className = `aviso-card ${lido ? "lido" : "nao-lido"}`;
+
+    card.innerHTML = `
+      <div class="aviso-header-info">
+        <h4>${aviso.titulo}</h4>
+        <span class="aviso-data">${aviso.data}</span>
+      </div>
+      <p>${aviso.conteudo}</p>
+      ${
+        !lido
+          ? `<button class="btn-marcar-lido" onclick="alternarLido(this, '${aviso.titulo}')">Marcar como lido</button>`
+          : `<span class="sub-text" style="font-size: 11px;">✓ Lido</span>`
+      }
+    `;
+
+    container.appendChild(card);
   });
+}
+
+function alternarLido(btnElement, tituloAviso) {
+  // Altera o visual do card
+  const card = btnElement.closest(".aviso-card");
+  if (card) {
+    card.classList.remove("nao-lido");
+    card.classList.add("lido");
+  }
+
+  btnElement.outerHTML = `<span class="sub-text" style="font-size: 11px;">✓ Lido</span>`;
+
+  // Atualiza a lista de avisos lidos no localStorage
+  const avisosLidos = obterAvisosLidos();
+  if (!avisosLidos.includes(tituloAviso)) {
+    avisosLidos.push(tituloAviso);
+    salvarAvisosLidos(avisosLidos);
+  }
+
+  // Atualiza o badge de não lidos
+  const badge = document.getElementById("badgeAvisos");
+  if (badge) {
+    let countAtual = parseInt(badge.textContent) || 0;
+    if (countAtual > 0) {
+      atualizarBadgeAvisos(countAtual - 1);
+    }
+  }
+}
+
+window.alternarLido = alternarLido;
+
+function atualizarBadgeAvisos(count) {
+  const badge = document.getElementById("badgeAvisos");
+  if (!badge) return;
+
+  if (count > 0) {
+    badge.textContent = `${count} não lido${count > 1 ? "s" : ""}`;
+    badge.style.display = "inline-block";
+  } else {
+    badge.textContent = "0 não lidos";
+    badge.style.display = "none";
+  }
 }

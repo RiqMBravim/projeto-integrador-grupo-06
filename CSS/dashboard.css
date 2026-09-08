@@ -30,7 +30,7 @@ body {
   width: 100%;
 }
 
-
+/* Sidebar */
 .sidebar {
   width: 200px;
   background-color: #ffffff;
@@ -59,7 +59,6 @@ body {
 .menu-icon:hover {
   background-color: #f1f5f9;
 }
-
 
 .sidebar-buttons {
   display: none;
@@ -92,7 +91,6 @@ body {
   border-color: #0284c7;
 }
 
-
 .btn-action.logout {
   color: #ef4444;
   background: #fef2f2;
@@ -105,7 +103,7 @@ body {
   color: #ffffff;
 }
 
-
+/* Conteúdo Principal */
 .main-card {
   flex: 1;
   background-color: #ffffff;
@@ -215,17 +213,6 @@ body {
   line-height: 1.6;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 900px) {
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .tab-content {
   display: none; 
 }
@@ -235,93 +222,17 @@ body {
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* Estilos para a aba Notas */
-.notas-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.nota-card {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.nota-card h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 12px;
-}
-
-.nota-detalhe {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #334155;
-  margin-bottom: 6px;
-}
-
-.nota-detalhe span:last-child {
-  font-weight: 600;
-}
-
-.situacao-aprovado { color: #16a34a; font-weight: 700; }
-.situacao-reprovado { color: #dc2626; font-weight: 700; }
-.situacao-recuperacao { color: #d97706; font-weight: 700; }
-
-/* Estilos para a aba Histórico */
-.historico-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.historico-card {
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 20px;
-}
-
-.historico-card h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 12px;
-}
-
-.historico-detalhe {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #334155;
-  margin-bottom: 6px;
-}
-
-.historico-detalhe span:last-child {
-  font-weight: 600;
-}
-
-.situacao-aprovado {
-  color: #16a34a;
-  font-weight: 700;
-}
-
-.situacao-reprovado {
-  color: #dc2626;
-  font-weight: 700;
-}
-
-/* Estilos para a aba Faltas */
+/* Cards genéricos de Notas, Histórico e Faltas */
+.notas-container,
+.historico-container,
 .faltas-container {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+.nota-card,
+.historico-card,
 .falta-card {
   background-color: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -329,6 +240,8 @@ body {
   padding: 20px;
 }
 
+.nota-card h3,
+.historico-card h3,
 .falta-card h3 {
   font-size: 16px;
   font-weight: 700;
@@ -336,6 +249,8 @@ body {
   margin-bottom: 12px;
 }
 
+.nota-detalhe,
+.historico-detalhe,
 .falta-detalhe {
   display: flex;
   justify-content: space-between;
@@ -344,6 +259,193 @@ body {
   margin-bottom: 6px;
 }
 
+.nota-detalhe span:last-child,
+.historico-detalhe span:last-child,
 .falta-detalhe span:last-child {
   font-weight: 600;
+}
+
+/* Situações */
+.situacao-aprovado { color: #16a34a; font-weight: 700; }
+.situacao-reprovado { color: #dc2626; font-weight: 700; }
+.situacao-recuperacao { color: #d97706; font-weight: 700; }
+
+/* Atalhos Rápidos e Ícones */
+.quick-access-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.quick-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-quick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: #0284c7;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-quick:hover {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+  box-shadow: 0 2px 4px rgba(2, 132, 199, 0.15);
+}
+
+.quick-icon {
+  width: 16px;
+  height: 16px;
+  stroke: #0284c7;
+  transition: stroke 0.2s ease;
+}
+
+.btn-quick:hover .quick-icon {
+  stroke: #ffffff;
+}
+
+/* Avisos */
+.avisos-section {
+  margin-top: 10px;
+}
+
+.avisos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.badge-unread {
+  background-color: #0284c7;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.avisos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aviso-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #94a3b8;
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.aviso-card.nao-lido {
+  background-color: #f0f9ff;
+  border-left-color: #0284c7;
+}
+
+.aviso-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.aviso-card h4 {
+  font-size: 15px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.aviso-data {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.aviso-card p {
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.btn-marcar-lido {
+  background: transparent;
+  border: none;
+  color: #0284c7;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.btn-marcar-lido:hover {
+  text-decoration: underline;
+}
+
+/* Header de Abas / Botão Voltar */
+.tab-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.tab-header h2 {
+  margin: 0;
+}
+
+.btn-voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f1f5f9;
+  color: #0284c7;
+  border: 1px solid #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-voltar:hover {
+  background-color: #0284c7;
+  color: #ffffff;
+  border-color: #0284c7;
+}
+
+.btn-voltar svg {
+  transition: transform 0.2s ease;
+}
+
+.btn-voltar:hover svg {
+  transform: translateX(-3px); 
+}
+
+/* Animações e Responsividade */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
 }
