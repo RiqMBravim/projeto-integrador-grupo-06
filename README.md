@@ -1,6 +1,6 @@
 # Projeto Integrador — Grupo 06
 
-Projeto Integrador desenvolvido para o curso de Análise e Desenvolvimento de Sistemas do Centro Universitário Senac.
+Projeto desenvolvido para o curso de Análise e Desenvolvimento de Sistemas do Centro Universitário Senac.
 
 ## Integrantes
 
@@ -9,55 +9,173 @@ Projeto Integrador desenvolvido para o curso de Análise e Desenvolvimento de Si
 - Davi Freitas de Moura Bina
 - Sabrina Aparecida Alves
 
-## Objetivo
+## Sobre o projeto
 
-Desenvolvimento de uma Prova de Conceito de um sistema acadêmico para centralização de informações do aluno.
+O projeto consiste em uma Prova de Conceito de um sistema acadêmico voltado para a jornada do aluno.
 
-## Prova de Conceito
+A proposta é permitir que o aluno consulte em um único lugar algumas informações importantes da vida acadêmica.
 
-A PoC implementa a jornada do aluno, incluindo:
+## Funcionalidades
 
-- autenticação por e-mail ou CPF;
+Atualmente o sistema possui:
+
+- login por e-mail ou CPF;
 - validação de senha;
-- controle básico de sessão no navegador;
-- painel com dados acadêmicos;
-- consulta de histórico e faltas;
+- dashboard do aluno;
+- consulta de notas;
+- histórico escolar;
+- consulta de faltas;
+- cálculo de presença;
+- consulta de horários;
+- avisos acadêmicos;
+- tema claro e escuro;
 - logout.
 
-## Tecnologias atuais
+## Tecnologias utilizadas
 
-- HTML5;
-- CSS3;
-- JavaScript;
-- JSON como base de dados simulada da PoC;
-- `localStorage` para manter a sessão durante a demonstração.
+- HTML
+- CSS
+- JavaScript
+- JSON
+- LocalStorage
+- Git e GitHub
 
-## Como executar
+Nesta versão da PoC, o arquivo `dados.json` é utilizado como uma base de dados simulada.
 
-O projeto usa `fetch()` para ler o arquivo `dados.json`. Por isso, não abra os arquivos HTML diretamente pelo caminho `file:///`.
+## Estrutura do projeto
 
-### Usando o VS Code + Live Server
+```text
+CSS/
+HTML/
+JS/
+dados.json
+README.md
+```
+
+A tela inicial do sistema está em:
+
+```text
+HTML/index.html
+```
+
+O painel do aluno está em:
+
+```text
+HTML/dashboard.html
+```
+
+## Como executar o projeto
+
+O projeto precisa ser executado através de um servidor local, porque o JavaScript utiliza `fetch()` para carregar os dados do arquivo `dados.json`.
+
+Por isso, não recomendamos abrir o `index.html` diretamente pelo explorador de arquivos.
+
+### Opção 1 — VS Code com Live Server
 
 1. Abra a pasta do projeto no VS Code.
 2. Instale a extensão **Live Server**, caso ainda não tenha.
-3. Abra `HTML/index.html`.
-4. Clique em **Open with Live Server**.
-5. A aplicação deverá abrir em um endereço semelhante a `http://127.0.0.1:5500/HTML/index.html`.
+3. Abra o arquivo:
 
-## Credenciais de demonstração
+```text
+HTML/index.html
+```
+
+4. Clique com o botão direito e escolha:
+
+```text
+Open with Live Server
+```
+
+O navegador deverá abrir em um endereço parecido com:
+
+```text
+http://127.0.0.1:5500/HTML/index.html
+```
+
+### Opção 2 — Servidor com Python
+
+Também é possível executar o projeto pelo terminal.
+
+Abra o terminal na pasta raiz do projeto e execute:
+
+```bash
+py -m http.server 5500
+```
+
+Caso esse comando não funcione, tente:
+
+```bash
+python -m http.server 5500
+```
+
+Depois acesse no navegador:
+
+```text
+http://localhost:5500/HTML/index.html
+```
+
+Para encerrar o servidor:
+
+```text
+Ctrl + C
+```
+
+## Scripts
+
+Os arquivos JavaScript não precisam ser executados manualmente.
+
+Ao abrir a aplicação pelo servidor local, os scripts são carregados automaticamente pelas páginas HTML.
+
+Não é necessário utilizar comandos como:
+
+```bash
+node JS/script.js
+```
+
+## Usuários de teste
 
 ### Carlos
 
-- E-mail: `carlos.amador@gestaoacademica.com.br`
-- CPF: `123.456.789-00` ou `12345678900`
-- Senha: `123456`
+```text
+E-mail: carlos.amador@gestaoacademica.com.br
+CPF: 123.456.789-00
+Senha: 123456
+```
 
 ### Ana
 
-- E-mail: `ana.maria@gestaoacademica.com.br`
-- CPF: `987.654.321-11` ou `98765432111`
-- Senha: `654321`
+```text
+E-mail: ana.maria@gestaoacademica.com.br
+CPF: 987.654.321-11
+Senha: 654321
+```
 
-## Observação sobre segurança
+### Mariana
 
-A autenticação atual é uma simulação de frontend para a Prova de Conceito. As senhas estão armazenadas em `dados.json` e, portanto, **não representam uma implementação segura para produção**. Em uma versão posterior, a validação deverá ser realizada por um backend, com senhas armazenadas de forma segura (hash) em banco de dados.
+Usuária criada para testar diferentes situações de notas e faltas.
+
+```text
+E-mail: teste.cenarios@gestaoacademica.com.br
+CPF: 529.982.247-25
+Senha: 123456
+```
+
+## Teste básico da aplicação
+
+Para testar o sistema:
+
+1. inicie o servidor local;
+2. acesse a tela de login;
+3. entre com um dos usuários de teste;
+4. confira os dados do aluno;
+5. teste notas, histórico, faltas, horários e avisos;
+6. teste o tema claro e escuro;
+7. faça logout.
+
+## Observação
+
+A autenticação desta versão é apenas uma simulação para a Prova de Conceito.
+
+As informações dos alunos e as senhas estão armazenadas em `dados.json`, portanto essa implementação não deve ser utilizada em produção.
+
+Em uma versão futura, a ideia é utilizar backend e banco de dados para realizar a autenticação e armazenar os dados de forma adequada.
